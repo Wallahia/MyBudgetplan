@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Budget</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="chart.umd.min.js"></script>
+  </head>
+  <body data-page="budget">
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand-wrap brand-link" href="profile.html" aria-label="Öppna min profil">
+          <img class="brand-mark" src="resources/mybudgetplann-logo.png" alt="MyBudgetplann" />
+          <div>
+            <p class="eyebrow">Budget</p>
+            <h1>Budgetplanerare</h1>
+          </div>
+        </a>
+
+        <div class="topbar-actions">
+          <nav class="main-nav" aria-label="Huvudnavigation">
+            <a class="nav-link" href="index.html">Ny budget</a>
+            <a class="nav-link" href="profile.html">Mina budgetar</a>
+          </nav>
+          <button id="backToHomeBtn" class="secondary-btn" type="button">← Startsidan</button>
+        </div>
+      </header>
+
+      <main>
+        <section class="dashboard-header">
+          <div>
+            <p class="eyebrow">Aktuell budget</p>
+            <h2 id="budgetTitle">Min budget</h2>
+            <p id="budgetMeta" class="budget-meta">September 2026</p>
+          </div>
+        </section>
+
+        <section class="summary-grid" aria-label="Ekonomisk översikt">
+          <article class="summary-card salary-card">
+            <div class="card-label">Lön</div>
+            <div class="metric-value" id="salaryDisplay">0 kr</div>
+            <div class="inline-editor">
+              <input id="salaryInput" type="number" min="0" step="1" value="0" aria-label="Skriv in din lön" />
+              <button id="saveSalaryBtn" type="button" class="primary-btn">Spara lön</button>
+            </div>
+          </article>
+
+          <article class="summary-card expense-card">
+            <div class="card-label">Totala utgifter</div>
+            <div class="metric-value" id="totalExpensesDisplay">0 kr</div>
+          </article>
+
+          <article class="summary-card remaining-card" id="remainingCard">
+            <div class="card-label">Pengar kvar</div>
+            <div class="metric-value" id="remainingDisplay">0 kr</div>
+            <div id="budgetWarning" class="warning hidden">Du spenderar mer än din lön.</div>
+          </article>
+        </section>
+
+        <section class="overview-section" aria-label="Diagram och sammanfattning">
+          <article class="chart-card">
+            <div class="section-heading">
+              <h3>Utgifter</h3>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="expensesChart" aria-label="Cirkeldiagram över utgifter"></canvas>
+              <div class="chart-center">
+                <span>Totalt</span>
+                <strong id="chartTotalValue">0 kr</strong>
+              </div>
+            </div>
+            <div id="chartLegend" class="chart-legend" aria-label="Diagramlegend"></div>
+          </article>
+
+          <article class="summary-card breakdown-card">
+            <div class="section-heading">
+              <h3>Sammanfattning</h3>
+            </div>
+            <div class="summary-list">
+              <div class="summary-row">
+                <span>Fasta avgifter</span>
+                <strong id="fixedSummary">0 kr</strong>
+              </div>
+              <div class="summary-row">
+                <span>Rörliga avgifter</span>
+                <strong id="variableSummary">0 kr</strong>
+              </div>
+              <div class="summary-row">
+                <span>Sparanden</span>
+                <strong id="savingsSummary">0 kr</strong>
+              </div>
+              <div class="summary-row">
+                <span>Budget totalt</span>
+                <strong id="budgetSummary">0 kr</strong>
+              </div>
+              <div class="summary-row highlight-row">
+                <span>Kvar efter utgifter</span>
+                <strong id="remainingSummary">0 kr</strong>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="categories" aria-label="Budgetkategorier">
+          <article class="category-card" data-category="fixed">
+            <div class="category-header">
+              <h3>Fasta avgifter</h3>
+              <button class="primary-btn add-cost-btn" type="button" data-category="fixed">+ Lägg till kostnad</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Kostnadstyp</th>
+                    <th>Budget</th>
+                    <th>Kostnad</th>
+                  </tr>
+                </thead>
+                <tbody id="fixedTableBody"></tbody>
+              </table>
+            </div>
+            <div class="totals-row">
+              <span>Budget totalt: <strong id="fixedBudgetTotal">0 kr</strong></span>
+              <span>Kostnad totalt: <strong id="fixedCostTotal">0 kr</strong></span>
+              <span>Budget kvar/över: <strong id="fixedDiffTotal">0 kr</strong></span>
+            </div>
+          </article>
+
+          <article class="category-card" data-category="variable">
+            <div class="category-header">
+              <h3>Rörliga avgifter</h3>
+              <button class="primary-btn add-cost-btn" type="button" data-category="variable">+ Lägg till kostnad</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Kostnadstyp</th>
+                    <th>Budget</th>
+                    <th>Kostnad</th>
+                  </tr>
+                </thead>
+                <tbody id="variableTableBody"></tbody>
+              </table>
+            </div>
+            <div class="totals-row">
+              <span>Budget totalt: <strong id="variableBudgetTotal">0 kr</strong></span>
+              <span>Kostnad totalt: <strong id="variableCostTotal">0 kr</strong></span>
+              <span>Budget kvar/över: <strong id="variableDiffTotal">0 kr</strong></span>
+            </div>
+          </article>
+
+          <article class="category-card" data-category="savings">
+            <div class="category-header">
+              <h3>Sparanden</h3>
+              <button class="primary-btn add-cost-btn" type="button" data-category="savings">+ Lägg till kostnad</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Kostnadstyp</th>
+                    <th>Budget</th>
+                    <th>Kostnad</th>
+                  </tr>
+                </thead>
+                <tbody id="savingsTableBody"></tbody>
+              </table>
+            </div>
+            <div class="totals-row">
+              <span>Budget totalt: <strong id="savingsBudgetTotal">0 kr</strong></span>
+              <span>Kostnad totalt: <strong id="savingsCostTotal">0 kr</strong></span>
+              <span>Budget kvar/över: <strong id="savingsDiffTotal">0 kr</strong></span>
+            </div>
+          </article>
+        </section>
+
+        <div class="save-budget-section">
+          <div class="save-divider"></div>
+          <button id="saveBudgetBtn" type="button" class="primary-btn save-btn">💾 Spara budget</button>
+          <div id="saveStatus" class="save-status hidden">Budgeten har sparats!</div>
+        </div>
+      </main>
+    </div>
+
+    <div id="costModalBackdrop" class="modal-backdrop hidden" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-header">
+          <h3 id="modalTitle">Lägg till kostnad</h3>
+          <button id="closeModalBtn" class="icon-btn" type="button" aria-label="Stäng formulär">×</button>
+        </div>
+
+        <form id="costForm">
+          <input type="hidden" id="costId" />
+
+          <label class="field-label">
+            Kostnadstyp
+            <input id="costName" type="text" maxlength="50" placeholder="Exempel: Hyra" required />
+          </label>
+
+          <div class="form-grid">
+            <label class="field-label">
+              Budget
+              <input id="costBudget" type="number" min="0" step="1" placeholder="6000" required />
+            </label>
+
+            <label class="field-label">
+              Kostnad
+              <input id="costAmount" type="number" min="0" step="1" placeholder="6000" required />
+            </label>
+          </div>
+
+          <label class="field-label">
+            Kategori
+            <select id="costCategory">
+              <option value="fixed">Fasta avgifter</option>
+              <option value="variable">Rörliga avgifter</option>
+              <option value="savings">Sparanden</option>
+            </select>
+          </label>
+
+          <div class="modal-actions">
+            <button id="cancelCostBtn" class="secondary-btn" type="button">Avbryt</button>
+            <button class="primary-btn" type="submit">Lägg till</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+﻿{
+    "version":  "1.0.1",
+    "notes":  "Första övergångsversionen med den nya updater-signeringen.",
+    "pub_date":  "2026-09-03T00:00:00Z",
+    "platforms":  {
+                      "windows-x86_64":  {
+                                             "signature":  "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSNitCN21XV0haTHlISHZ5WkQ5KzNWMnZzc3pZdHlxbHdZY3B1ZW54Z25LYlptQ2ZQWjFOdGk3MkZ4UUJJaldVYTVHdnZtcnVLQk9LRGtaRXVWQUh4SWM1eVR3a2JuQmdFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg4NDY4ODEyCWZpbGU6QnVkZ2V0cGxhbmVyYXJlbl8xLjAuMV94NjQtc2V0dXAuZXhlClhHczd2SWxYVVBzcGZGQlEvcEk3dEFpTklUUEQ2OStucStvZ05YVzlBSlpMV2VrMHYwSmtpOTdMbHBSbzZmK3d0MVo4M0xjdkJjbTVIZEVWNlF3ekFRPT0K",
+                                             "url":  "https://github.com/Wallahia/MyBudgetplan/releases/download/v1.0.1/Budgetplaneraren_1.0.1_x64-setup.exe"
+                                         }
+                  }
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Budgetplaneraren",
+  "version": "1.0.2",
+  "identifier": "se.budgetplaneraren.windows",
+  "build": {
+    "beforeBuildCommand": "npm run build:web",
+    "beforeDevCommand": "npm run build:web",
+    "frontendDist": "../www"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Budgetplaneraren",
+        "width": 1200,
+        "height": 900,
+        "minWidth": 760,
+        "minHeight": 620,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "createUpdaterArtifacts": true,
+    "targets": ["nsis"],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "embedBootstrapper"
+      }
+    },
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.ico"
+    ],
+    "shortDescription": "Personlig budgetplanerare",
+    "longDescription": "Budgetplaneraren hjälper dig att planera lön, utgifter och sparande offline."
+  },
+  "plugins": {
+    "updater": {
+      "active": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDJGRDk2MTU5RTYxRUY4N0EKUldSNitCN21XV0haTDQ5c2twWEd5OElGTzBKUEE0QUdTcjlaZEFqSGUyTXRzOGNBakNvVDdSUDgK",
+      "endpoints": [
+        "https://github.com/Wallahia/MyBudgetplan/releases/latest/download/latest.json"
+      ]
+    }
+  }
+}

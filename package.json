@@ -1,0 +1,22 @@
+{
+  "name": "budgetplaneraren",
+  "version": "1.0.2",
+  "private": true,
+  "description": "Budgetplaneraren som installerbar Windows-app med Tauri",
+  "scripts": {
+    "build:web": "node build-web.js",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
+    "build:windows": "tauri build"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.11.1",
+    "@tauri-apps/plugin-process": "^2.3.1",
+    "@tauri-apps/plugin-updater": "^2.11.0",
+    "chart.js": "^4.5.1"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.11.4"
+  }
+}

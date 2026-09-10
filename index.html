@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>BudgetApp</title>
+    <meta
+      name="description"
+      content="Startsida för att skapa en ny budget och gå vidare till huvudsidan."
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="start">
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand-wrap brand-link" href="profile.html" aria-label="Öppna min profil">
+          <img class="brand-mark" src="resources/mybudgetplann-logo.png" alt="MyBudgetplann" />
+          <div>
+            <p class="eyebrow">Startsida</p>
+            <h1>Budgetplanerare</h1>
+          </div>
+        </a>
+        <nav class="main-nav" aria-label="Huvudnavigation">
+          <a class="nav-link active" href="index.html">Ny budget</a>
+          <a class="nav-link" href="profile.html">Mina budgetar</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero-panel start-panel">
+          <div>
+            <p class="eyebrow">Ny budget</p>
+            <h2>Skapa din budget</h2>
+            <p class="subtext">Skriv in namnet på budgeten och välj månad och år. När du sparar kommer du till huvudsidan där du fyller i kostnaderna.</p>
+          </div>
+        </section>
+
+        <section class="panel-section start-panel-card">
+          <form id="startBudgetForm" class="start-form">
+            <label class="field-label">
+              Budgetens namn
+              <input id="landingBudgetName" type="text" maxlength="60" placeholder="Min budget" required />
+            </label>
+
+            <div class="form-grid">
+              <label class="field-label">
+                Månad
+                <select id="landingBudgetMonth" required></select>
+              </label>
+
+              <label class="field-label">
+                År
+                <input id="landingBudgetYear" type="number" min="1900" max="2100" step="1" required />
+              </label>
+            </div>
+
+            <div class="start-form-actions">
+              <button type="submit" class="primary-btn">Spara och gå vidare</button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

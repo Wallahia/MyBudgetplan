@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Min profil | BudgetApp</title>
+    <meta name="description" content="Se och hantera dina sparade budgetplaner." />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="profile">
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand-wrap brand-link" href="profile.html" aria-label="Öppna min profil">
+          <img class="brand-mark" src="resources/mybudgetplann-logo.png" alt="MyBudgetplann" />
+          <div>
+            <p class="eyebrow">Min profil</p>
+            <h1>Budgetplanerare</h1>
+          </div>
+        </a>
+        <div class="topbar-actions">
+          <nav class="main-nav" aria-label="Huvudnavigation">
+            <a class="nav-link" href="index.html">Ny budget</a>
+            <a class="nav-link active" href="profile.html">Mina budgetar</a>
+          </nav>
+          <div class="theme-switcher" aria-label="Välj tema">
+            <button class="theme-btn" type="button" data-theme-choice="light" aria-label="Välj ljust tema" title="Ljust tema">☀️</button>
+            <button class="theme-btn" type="button" data-theme-choice="dark" aria-label="Välj mörkt tema" title="Mörkt tema">🌙</button>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="profile-intro">
+          <p class="eyebrow">Personligt utrymme</p>
+          <h2>Min profil</h2>
+          <p class="subtext">Mina budgetplaner</p>
+        </section>
+
+        <section id="profileBudgetsList" class="profile-budget-grid" aria-label="Mina sparade budgetplaner"></section>
+
+        <div class="profile-footer-actions">
+          <a class="secondary-btn" href="budget.html">← Tillbaka</a>
+        </div>
+      </main>
+    </div>
+
+    <div id="deleteBudgetModal" class="modal-backdrop hidden" aria-hidden="true">
+      <div class="modal small-modal" role="dialog" aria-modal="true" aria-labelledby="deleteBudgetTitle">
+        <div class="modal-header">
+          <h3 id="deleteBudgetTitle">Ta bort budget</h3>
+          <button id="cancelDeleteBudgetBtn" class="icon-btn" type="button" aria-label="Avbryt">×</button>
+        </div>
+        <p>Är du säker på att du vill ta bort denna budget?</p>
+        <div class="modal-actions">
+          <button id="dismissDeleteBudgetBtn" class="secondary-btn" type="button">Avbryt</button>
+          <button id="confirmDeleteBudgetBtn" class="danger-btn" type="button">🗑 Ta bort</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

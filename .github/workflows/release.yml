@@ -1,0 +1,82 @@
+name: Release Windows app
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable-msvc
+          targets: x86_64-pc-windows-msvc
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate tag and version
+        shell: pwsh
+        run: |
+          $version = node -p "require('./package.json').version"
+          if ($env:GITHUB_REF_NAME -ne "v$version") {
+            throw "Git-taggen $env:GITHUB_REF_NAME matchar inte package.json-versionen v$version."
+          }
+
+      - name: Build signed Windows installer
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        run: npm run build:windows
+
+      - name: Create updater metadata
+        shell: pwsh
+        run: |
+          $version = node -p "require('./package.json').version"
+          $tag = $env:GITHUB_REF_NAME
+          $bundleDir = Join-Path $PWD "src-tauri\target\release\bundle\nsis"
+          $installer = Get-ChildItem $bundleDir -Filter "Budgetplaneraren_${version}_x64-setup.exe" | Select-Object -First 1
+          $signatureFile = Get-ChildItem $bundleDir -Filter "Budgetplaneraren_${version}_x64-setup.exe.sig" | Select-Object -First 1
+          if (-not $installer -or -not $signatureFile) {
+            throw "Installer eller signatur saknas i $bundleDir."
+          }
+
+          $metadata = [ordered]@{
+            version = $version
+            notes = "Förbättringar och buggfixar i MyBudgetplann."
+            pub_date = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+            platforms = [ordered]@{
+              "windows-x86_64" = [ordered]@{
+                signature = [System.IO.File]::ReadAllText($signatureFile.FullName).Trim()
+                url = "https://github.com/Wallahia/MyBudgetplan/releases/download/$tag/$($installer.Name)"
+              }
+            }
+          }
+
+          $metadata | ConvertTo-Json -Depth 6 | Set-Content (Join-Path $bundleDir "latest.json") -Encoding utf8
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: MyBudgetplann ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            src-tauri/target/release/bundle/nsis/Budgetplaneraren_*_x64-setup.exe
+            src-tauri/target/release/bundle/nsis/Budgetplaneraren_*_x64-setup.exe.sig
+            src-tauri/target/release/bundle/nsis/latest.json
