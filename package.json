@@ -1,6 +1,6 @@
 {
   "name": "budgetplaneraren",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "description": "Budgetplaneraren som installerbar Windows-app med Tauri",
   "scripts": {
